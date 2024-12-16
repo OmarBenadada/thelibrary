@@ -1,15 +1,14 @@
 import pandas as pd
-from operation import lookingfor_books,adding_books
+from operation import lookingfor_books, adding_books, delete_book_byname
 
-# Define a mock DataFrame to simulate the library
-data = {
-    "Title": ["The Great Gatsby", "1984", "To Kill a Mockingbird", "Pride and Prejudice"],
-    "Author": ["F. Scott Fitzgerald", "George Orwell", "Harper Lee", "Jane Austen"],
-    "Year": [1925, 1949, 1960, 1813],
-    "Genre": ["Fiction", "Dystopian", "Classic", "Romance"]
-}
-library_df = pd.DataFrame(data)
+# Define columns for the DataFrame
+columns = ['Title', 'Author', 'Year', 'Genre']
 
-# Call the function for testing
+# Try to load existing data from CSV
+try:
+    library_df = pd.read_csv("thelibraryy.csv")
+except FileNotFoundError:
+    library_df = pd.DataFrame(columns=columns)  # If file doesn't exist, start with an empty DataFrame
 
-adding_books(library_df)
+# Call the function to delete a book by name
+library_df = lookingfor_books(library_df)
