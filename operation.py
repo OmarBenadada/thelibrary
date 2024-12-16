@@ -58,9 +58,29 @@ def lookingfor_books(df):
             print(f"The Author of the Book: {thetwo['Author']}")
             print(f"The Year of Release of the Book: {thetwo['Year']}")
             print(f"The Genre of the Book: {thetwo['Genre']}")
+            
 def delete_book_byname(df):
-    pass
     
+    bookss = books.Books() 
+    if df[(df['Title']==bookss.title) & (df["Author"]==bookss.author)].empty:
+        print("this books alredy dont exist Try another name")
+    else:
+        choice=input("""Choose Between the Availble Options 
+              1 -> Removing Books By Title. 
+              2 -> Removing Books By Author. 
+              3 -> Removing Books By Year.
+              4 -> Removing Books By Genre. """)
+        
+        match choice:
+            case 1:
+                df=df[df['Title']!=bookss.title]
+            case 2:
+                df=df[df["Author"]!=bookss.author]
+            case 3:
+                df=df[df['Title']!=bookss.year]
+            case 4:
+                df=df[df['Title']!=bookss.genre]
+                    
     
             
 
