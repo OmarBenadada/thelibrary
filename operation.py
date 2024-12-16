@@ -13,7 +13,6 @@ def adding_books(df):
             print("Exiting...")
             break
 
-        # Step 2: Get the author's name
         author = initialisation.book_author()
         if author.upper() == 'EXITP':
             print("Exiting...")
@@ -47,13 +46,8 @@ def lookingfor_books(df):
     while True:
        
         bookss = books.Books() 
-        
-        title, author, year, genre = bookss.get_book_details()
-        
-        if title == 'EXITP' or author == 'EXITP' or year== 'EXITP' or genre == 'EXITP':
-            print("Exiting...")
-            break
-        theone = df[(df["Title"] == title) & (df["Author"] == author)]
+    
+        theone = df[(df["Title"] == bookss.title) & (df["Author"] == bookss.author)]
         
         if theone.empty: 
             print("This book doesn't exist.")
