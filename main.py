@@ -11,4 +11,4 @@ except FileNotFoundError:
     library_df = pd.DataFrame(columns=columns)  # If file doesn't exist, start with an empty DataFrame
 
 # Call the function to delete a book by name
-library_df = lookingfor_books(library_df)
+library_df = delete_book_byname(library_df)

@@ -4,7 +4,6 @@ import initialisation
 import os
 
 def Exitting(input_func):
-    print("If you want to quit at any moment, just type EXITP")
     value = input_func()  
     if value.upper() == 'EXITP':
         print("Exiting...")
@@ -12,7 +11,7 @@ def Exitting(input_func):
     return value
 
 def adding_books(df):
-
+    print("If you want to quit at any moment, just type EXITP")
     
     while True:
         
@@ -39,7 +38,7 @@ def adding_books(df):
 
 
 def lookingfor_books(df):
-    
+    print("If you want to quit at any moment, just type EXITP")
     while True:
         thechoice=input("""
 1 -> If Wou Want To See All the books with the same (Title,Author,Year,Genre).
@@ -91,20 +90,19 @@ Enter The Choice You want : """)
             
             
 def delete_book_byname(df):
+    print("If you want to quit at any moment, just type EXITP")
     while True:
         
         thechoice=input("""
-    1 -> If you want to Remove One Book 
-    2 -> If you want ot remove  multiple books by something specific
-    Enter your choice here : """)
+1 -> If you want to Remove One Book 
+2 -> If you want ot Remove  multiple books by something specific
+Enter your choice here : """)
         
         match thechoice:
             
             case '1':
-                Exitting()
-                title=initialisation.book_title()
-                author=initialisation.book_author()
-                
+                title=Exitting(initialisation.book_title)
+                author=Exitting(initialisation.book_author)
                 if not df[(df['Title'] == title) & (df['Author'] == author)].empty:
                     df = df[~((df['Title'] == title) & (df['Author'] == author))] 
                     print(f"The book {title} by {author} has been removed.")
@@ -123,8 +121,7 @@ def delete_book_byname(df):
                 match choice:
                     
                         case '1':
-                            Exitting()
-                            title=initialisation.book_title()
+                            title=Exitting(initialisation.book_title)
                             if df[(df['Title']==title) ].empty:
                                 print("this books already dont exist Try another title")
                                 return
@@ -132,17 +129,15 @@ def delete_book_byname(df):
                                 df=df[~(df['Title']==title)]
                                 
                         case '2':
-                            Exitting()
-                            author=initialisation.book_author()
+                            author=Exitting(initialisation.book_author)
                             if df[(df['Author']==author) ].empty:
-                                print("this books already dont exist Try another title")
+                                print("this books already dont exist Try another author")
                                 return
                             else:
                                 df=df[~(df['Author']==author)]
                                 
                         case '3':
-                            Exitting()
-                            year=initialisation.book_year()
+                            year=Exitting(initialisation.book_year)
                             if df[(df['Year']==year) ].empty:
                                 print("this books already dont exist Try another title")
                                 return
@@ -150,15 +145,14 @@ def delete_book_byname(df):
                                 df=df[~(df['Year']==year)]
                                 
                         case '4':
-                            Exitting()
-                            genre=initialisation.book_genre()
+                            genre=Exitting(initialisation.book_genre)
                             if df[(df['Genre']==genre) ].empty:
                                 print("this books already dont exist Try another title")
                                 return
                             else:
                                 df=df[~(df['Genre']==genre)]
                             
-                df.to_csv("thelibraryy.csv", index=False)
+        df.to_csv("thelibraryy.csv", index=False)
                 
                 
                 
