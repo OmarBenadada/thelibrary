@@ -82,10 +82,10 @@ Enter The Choice You want : """)
                     print("Try writing another name.")
                 else:
                     thetwo = theone.iloc[0]
-                    print(f"The Title of the Book: {thetwo['Title']}")
-                    print(f"The Author of the Book: {thetwo['Author']}")
-                    print(f"The Year of Release of the Book: {thetwo['Year']}")
-                    print(f"The Genre of the Book: {thetwo['Genre']}")
+                    print(f"The Title of the Book you want is: {{{thetwo['Title']}}}")
+                    print(f"The Author of the Book you want is: {{{thetwo['Author']}}}")
+                    print(f"The Year of Release of the Book you want is: {{{thetwo['Year']}}}")
+                    print(f"The Genre of the Book you want is: {{{thetwo['Genre']}}}")
             
             
             
@@ -153,7 +153,11 @@ Enter your choice here : """)
                                 df=df[~(df['Genre']==genre)]
                             
         df.to_csv("thelibraryy.csv", index=False)
-                
+
+def showing_theLibrary():
+    df=pd.read_csv('thelibraryy.csv')
+    print(df)
+                    
                 
                 
     

@@ -1,5 +1,5 @@
 import pandas as pd
-from operation import lookingfor_books, adding_books, delete_book_byname
+from operation import lookingfor_books, adding_books, delete_book_byname,showing_theLibrary
 
 # Define columns for the DataFrame
 columns = ['Title', 'Author', 'Year', 'Genre']
@@ -11,4 +11,4 @@ except FileNotFoundError:
     library_df = pd.DataFrame(columns=columns)  # If file doesn't exist, start with an empty DataFrame
 
 # Call the function to delete a book by name
-library_df = delete_book_byname(library_df)
+library_df = showing_theLibrary()

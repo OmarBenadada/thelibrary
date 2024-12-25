@@ -1,3 +1,3 @@
-liste=["omar","aicha"]
-for i in liste:
-    print(i)
+print('''mhammed+bouchra
+      aicha''')
+print('mahommed + bouchra\n''                                      omar')
