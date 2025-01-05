@@ -1,7 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QMainWindow
+from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton
 from PyQt5.QtGui import QIcon,QFont
 from PyQt5.QtCore import Qt
+import books
+import pandas as pd
 
 class MainWindow(QWidget):
     
@@ -10,11 +12,12 @@ class MainWindow(QWidget):
         self.setGeometry(400,400,500,600)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
-        self.data_info = self.Labels()
+        
+        self.data_info = self.Ui()
         
         
         
-    def Labels(self):
+    def Ui(self):
         
         vbox=QVBoxLayout()
         
@@ -34,20 +37,47 @@ class MainWindow(QWidget):
                     color: white;
                 }
             """)
+        save.clicked.connect(self.on_click)
         
         names=['Title','Author','Year','Genre']
-        data_info={}
+        self.data_info={}
         for name in names:
             field=QLineEdit(self)
             field.setPlaceholderText(f"Enter the {name} ...")
             field.setStyleSheet("font-size:30px; ")
             vbox.addWidget(field)
-            data_info[name]=field
+            self.data_info[name]=field
         
         vbox.addWidget(save)    
         self.setLayout(vbox)  
-        return data_info 
+        return self.data_info 
     
+    def on_click(self):
+        
+        title=self.data_info['Title'].text()
+        author=self.data_info['Author'].text()
+        year=self.data_info['Year'].text()
+        genre=self.data_info['Genre'].text()
+        
+        try:
+            df = pd.read_csv("thelibraryy.csv")
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
+        
+        if not df[(df["Title"]==title) & (df["Author"]==author)].empty:
+            print(f"this book {author} already Exist in the library ")
+            
+   
+        else:
+            book = books.Books(title=title, author=author, year=year, genre=genre)
+            frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre}])
+            
+            df=pd.concat([df,frame],axis=0,ignore_index=True)
+            
+            df.to_csv("thelibraryy.csv", index=False)
+            
+            print("book is added to the library")
+        
     
 def main():
     app = QApplication(sys.argv)
