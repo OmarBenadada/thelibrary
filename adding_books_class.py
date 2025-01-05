@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton
-from PyQt5.QtGui import QIcon,QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 import books
 import pandas as pd
 
@@ -21,7 +20,7 @@ class MainWindow(QWidget):
         
         vbox=QVBoxLayout()
         
-        save=QPushButton("Clich Here To Save")
+        save=QPushButton("Click Here To Save")
         
         save.setStyleSheet("""
                 QPushButton {
