@@ -59,6 +59,11 @@ class MainWindow(QWidget):
         year=self.data_info['Year'].text()
         genre=self.data_info['Genre'].text()
         
+        if not year.isdigit():
+            print("Year must be a valid number.")
+            return
+        
+        
         try:
             df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
