@@ -12,20 +12,20 @@ class MainWindow(QWidget):
         self.setGeometry(400,400,800,800)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
-        self.book_title=QLabel("Here Is The Title Of The Book :",self)
-        self.book_author=QLabel("Here Is The Author Of The Book :",self)
-        self.book_year=QLabel("Here Is The Year Of The Book :",self)
-        self.book_genre=QLabel("Here Is The Genre Of The Book :",self)
+        self.book_title=QLabel(self)
+        self.book_author=QLabel(self)
+        self.book_year=QLabel(self)
+        self.book_genre=QLabel(self)
         self.data_info = self.Ui()
 
     def Ui(self):
         
-        main_vbox=QVBoxLayout()
+        self.main_vbox = QVBoxLayout()
         QH=QHBoxLayout()
         QH.setAlignment(Qt.AlignTop)
         
-        save=QPushButton("Click Here To Search")
-        save.setStyleSheet("""
+        search=QPushButton("Click Here To Search")
+        search.setStyleSheet("""
                 QPushButton {
                     background-color:rgba(255, 255, 255, 0.5);
                     color: black;
@@ -39,59 +39,58 @@ class MainWindow(QWidget):
                     color: white;
                 }
             """)
-        ##save.clicked.connect(self.on_click)
+        search.clicked.connect(self.on_click)
         
         names=['Title','Author']
-        names2=[self.book_title,self.book_author,self.book_year,self.book_genre]
-        self.data_info={}
+        self.data_info={}  
         for name in names:
             field=QLineEdit(self)
             field.setPlaceholderText(f"Enter the {name} ...")
-            field.setStyleSheet("font-size:30px; ")
+            field.setStyleSheet("font-size:20px; ")
             QH.addWidget(field)
             self.data_info[name]=field
-        QH.addWidget(save)
-        main_vbox.addLayout(QH)
             
-        for i in names2:
-            main_vbox.addWidget(i)
-            i.setStyleSheet("font-size:20px;")
-        
-            
-        self.setLayout(main_vbox)      
+        QH.addWidget(search)    
+        self.main_vbox.addLayout(QH)
+        self.setLayout(self.main_vbox)
         return self.data_info 
     
     
-    # def on_click(self):
+    def on_click(self):
         
-    #     title=self.data_info['Title'].text()
-    #     author=self.data_info['Author'].text()
-    #     year=self.data_info['Year'].text()
-    #     genre=self.data_info['Genre'].text()
-        
-    #     if not year.isdigit():
-    #         print("Year must be a valid number.")
-    #         return
+        title=self.data_info['Title'].text()
+        author=self.data_info['Author'].text()
         
         
-    #     try:
-    #         df = pd.read_csv("thelibraryy.csv")
-    #     except FileNotFoundError:
-    #         df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
-        
-    #     if not df[(df["Title"]==title) & (df["Author"]==author)].empty:
-    #         print(f"this book {author} already Exist in the library ")
+        try:
+            df = pd.read_csv("thelibraryy.csv")
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
             
+        names2=[self.book_title,self.book_author,self.book_year,self.book_genre] 
+        for i in names2:
+            i.setStyleSheet("font-size:20px; ")    
+            self.main_vbox.addWidget(i)
+            
+        self.setLayout(self.main_vbox)    
+        
+        theone = df[(df["Title"] == title) & (df["Author"] == author)]
+        
+        if theone.empty: 
+            self.book_title.setText("Title: Not found")
+            self.book_author.setText("Author: Not found")
+            self.book_year.setText("Year: Not found")
+            self.book_genre.setText("Genre: Not found")
+            
+        else:
+            thetwo = theone.iloc[0]
+            self.book_title.setText(f"The Title of the Book you want is: {{{thetwo['Title']}}}")
+            self.book_author.setText(f"The Author of the Book you want is: {{{thetwo['Author']}}}")
+            self.book_year.setText(f"The Year of Release of the Book you want is: {{{thetwo['Year']}}}")
+            self.book_genre.setText(f"The Genre of the Book you want is: {{{thetwo['Genre']}}}")
    
-    #     else:
-    #         book = books.Books(title=title, author=author, year=year, genre=genre)
-    #         frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre}])
+        
             
-    #         df=pd.concat([df,frame],axis=0,ignore_index=True)
-            
-    #         df.to_csv("thelibraryy.csv", index=False)
-            
-    #         print("book is added to the library")
         
     
 def main():
