@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QHBoxLayout
+from PyQt5.QtWidgets import QApplication,QLineEdit,QWidget,QPushButton,QHBoxLayout,QLabel,QVBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 import books
@@ -12,12 +12,17 @@ class MainWindow(QWidget):
         self.setGeometry(400,400,800,800)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
+        self.book_title=QLabel("Here Is The Title Of The Book :",self)
+        self.book_author=QLabel("Here Is The Author Of The Book :",self)
+        self.book_year=QLabel("Here Is The Year Of The Book :",self)
+        self.book_genre=QLabel("Here Is The Genre Of The Book :",self)
         self.data_info = self.Ui()
-    
+
     def Ui(self):
         
-        hbox=QHBoxLayout()
-        hbox.setAlignment(Qt.AlignTop)
+        main_vbox=QVBoxLayout()
+        QH=QHBoxLayout()
+        QH.setAlignment(Qt.AlignTop)
         
         save=QPushButton("Click Here To Search")
         save.setStyleSheet("""
@@ -37,17 +42,25 @@ class MainWindow(QWidget):
         ##save.clicked.connect(self.on_click)
         
         names=['Title','Author']
+        names2=[self.book_title,self.book_author,self.book_year,self.book_genre]
         self.data_info={}
         for name in names:
             field=QLineEdit(self)
             field.setPlaceholderText(f"Enter the {name} ...")
             field.setStyleSheet("font-size:30px; ")
-            hbox.addWidget(field)
+            QH.addWidget(field)
             self.data_info[name]=field
+        QH.addWidget(save)
+        main_vbox.addLayout(QH)
+            
+        for i in names2:
+            main_vbox.addWidget(i)
+            i.setStyleSheet("font-size:20px;")
         
-        hbox.addWidget(save)    
-        self.setLayout(hbox)  
+            
+        self.setLayout(main_vbox)      
         return self.data_info 
+    
     
     # def on_click(self):
         
