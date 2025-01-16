@@ -2,7 +2,6 @@ import sys
 from PyQt5.QtWidgets import QApplication,QLineEdit,QWidget,QPushButton,QHBoxLayout,QLabel,QVBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
-import books
 import pandas as pd
 
 class MainWindow(QWidget):
