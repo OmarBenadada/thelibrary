@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         button_labels = [
             "Adding A Book/s",
             "Looking For A Book/s",
-            "Deleting a Book/s",
+            "Removing a Book/s",
             "Showing The Whole Library",
             "Changing the Data Of A Book/s",
             "Close The Programme ",
@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         fonctions = [
             self.Adding_A_Books,
             self.Looking_For_A_Books,
-            self.Deleting_a_Books,
+            self.Removing_a_Books,
             self.Showing_The_WholeLibrary,
             self.Changing_the_Data_Of_A_Books,
             self.Close_The_Programme,
@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
     def Looking_For_A_Books(self):
         print("Displaying data...")
 
-    def Deleting_a_Books(self):
+    def Removing_a_Books(self):
         print("Adding student...")
 
     def Showing_The_WholeLibrary(self):

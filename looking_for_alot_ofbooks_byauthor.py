@@ -14,8 +14,10 @@ class MainWindow(QWidget):
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.search=QPushButton("Click Here To Search")
         self.field=QLineEdit(self)
-        self.field.setPlaceholderText(f"Enter the Title ...")
-        self.thetitle = ""
+        self.field.setPlaceholderText(f"Enter the Author ...")
+        self.theauthor = ""
+        self.the_number=None
+        self.theone=None
         self.data_info = self.Ui()
 
     def Ui(self):
@@ -56,16 +58,25 @@ class MainWindow(QWidget):
         
     
     def on_click(self):
-        self.thetitle=self.field.text()
+        
+        self.theauthor=self.field.text()
+        
         try:
             df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
-            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])   
-             
+            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
+            
+        self.theone = df[(df["Author"] == self.theauthor)]    
+        self.the_number=self.theone.shape[0]
         
-        theone = df[(df["Title"] == self.thetitle)]
+
+        while self.main_vbox.count() > 1:  # Keep the first layout (search bar)
+            widget = self.main_vbox.takeAt(1).widget()
+            if widget:
+                widget.deleteLater()
+
         
-        if theone.empty: 
+        if self.theone.empty: 
             label=QLabel(f"""Title: Not found  
         
 Author: Not found 
@@ -80,15 +91,16 @@ Genre: Not found """,self)
             
         else:
             row_layout=QHBoxLayout()
-            for rows_ind,content in theone.iterrows():
+            for rows_ind,content in self.theone.iterrows():
                 label=QLabel(self)
                 label.setText(f"""Title       {content["Title"]}
 Author      {content["Author"]}
 Year        {content["Year"]}
-Genre     {content["Genre"]}""")
+Genre       {content["Genre"]}""")
                 label.setObjectName(f"label_number_{rows_ind}")
                 row_layout.addWidget(label)
                 self.main_vbox.addLayout(row_layout)
+                label.setAlignment(Qt.AlignCenter)
                 label.setStyleSheet("font-size:30px;")
                 
    
