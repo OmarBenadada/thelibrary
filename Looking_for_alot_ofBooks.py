@@ -9,7 +9,7 @@ class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,800,800)
+        self.setGeometry(400,400,550,550)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.search=QPushButton("Click Here To Search")
@@ -18,68 +18,70 @@ class MainWindow(QWidget):
     def Ui(self):
         
         self.main_vbox = QVBoxLayout()
-        QH=QHBoxLayout()
-        QH.setAlignment(Qt.AlignTop)
+        self.QH=QHBoxLayout()
+        self.QH.setAlignment(Qt.AlignTop)
         
         self.search.setStyleSheet("""
-                                        QPushButton {
-                                            background-color:rgba(255, 255, 255, 0.5);
-                                            color: black;
-                                            font-size: 25px;
-                                            border: 2px solid #0078D7;
-                                            border-radius: 20px;
-                                            padding: 10px;
-                                        }
-                                        QPushButton:hover {
-                                            background-color:rgb(147, 210, 255);
-                                            color: white;
-                                        }
-                                    """)
+                                    QPushButton {
+                                        background-color:rgba(255, 255, 255, 0.5);
+                                        color: black;
+                                        font-size: 20px;
+                                        border: 2px solid #0078D7;
+                                        border-radius: 20px;
+                                        padding: 10px;
+                                    }
+                                    QPushButton:hover {
+                                        background-color:rgb(147, 210, 255);
+                                        color: white;
+                                    }
+                                """)
         
         self.search.clicked.connect(self.on_click) 
         
         self.field=QLineEdit(self)
         self.field.setPlaceholderText(f"Enter the Title ...")
         self.field.setStyleSheet("font-size:30px; ")
+        self.thetitle=None
         
-        QH.addWidget(self.field)
+        self.QH.addWidget(self.field)
         
             
-        QH.addWidget(self.search)    
-        self.main_vbox.addLayout(QH)
+        self.QH.addWidget(self.search)    
+        self.main_vbox.addLayout(self.QH)
         self.setLayout(self.main_vbox)
-        self.thetitle=self.field.text()
+        
     
     def on_click(self):
-        
-        
         
         try:
             df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
             df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
             
-        
-            
-        self.main_vbox.addWidget(self.thetitle)
-            
         self.setLayout(self.main_vbox)    
         
         theone = df[(df["Title"] == self.thetitle)]
-        self.the_number=theone.shape[0]
+        self.thetitle=self.field.text()
         if theone.empty: 
-            self.thetitle.setText("""Title: Not found  
-                           
-                              Author: Not found 
+            label=QLabel(f"""Title: Not found  
+        
+Author: Not found 
                                
-                              Year: Not found 
+Year: Not found 
                               
-                              Genre: Not found""")
+Genre: Not found g{self.thetitle}""",self)
+            label.setObjectName('label_nember_zero')
+            self.main_vbox.addWidget(label)
+            label.setAlignment(Qt.AlignCenter)
+            label.setStyleSheet("font-size:30px; ")
+            
             
         else:
             for rows_ind,content in theone.iterrows():
                 label=QLabel(content,self)
                 label.setObjectName(f"label_number_{rows_ind}")
+                self.QH.addWidget(label)
+                self.main_vbox.addWidget(label)
                 
    
       
