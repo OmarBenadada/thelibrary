@@ -70,7 +70,7 @@ class MainWindow(QWidget):
         self.the_number=self.theone.shape[0]
         
 
-        while self.main_vbox.count() > 1:  # Keep the first layout (search bar)
+        while self.main_vbox.count() > 1:  
             widget = self.main_vbox.takeAt(1).widget()
             if widget:
                 widget.deleteLater()

@@ -11,19 +11,18 @@ class MainWindow(QWidget):
         self.setGeometry(400,400,600,350)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
+        self.inputbox=QLineEdit(self)
+        self.inputbox.setPlaceholderText("Enter the Year...")
         self.search=QPushButton("Click Here To Search")
-        self.field=QLineEdit(self)
-        self.field.setPlaceholderText(f"Enter the Title ...")
-        self.thetitle = ""
+        self.the_one=None
+        self.the_input=None
+        
         self.Ui()
-        self.results = []
-
+        
     def Ui(self):
         
-        self.main_vbox = QVBoxLayout()
-        
-        self.QH=QHBoxLayout()
-        self.QH.setAlignment(Qt.AlignTop)
+        QH=QHBoxLayout()
+        QH.setAlignment(Qt.AlignTop)
         
         self.search.setStyleSheet("""
                                     QPushButton {
@@ -39,62 +38,68 @@ class MainWindow(QWidget):
                                         color: white;
                                     }
                                 """)
+        self.inputbox.setStyleSheet("font-size:30px;")
+        QH.addWidget(self.inputbox)
+        QH.addWidget(self.search)
         
-        self.search.clicked.connect(self.on_click) 
-        
-        self.field.setStyleSheet("font-size:30px; ")
-        
-        self.QH.addWidget(self.field)
-          
-        self.QH.addWidget(self.search)    
-        self.main_vbox.addLayout(self.QH)
-        self.setLayout(self.main_vbox)
+        self.setLayout(QH)    
 
     def on_click(self):
         
-        self.thetitle=self.field.text()
-        
         try:
-            df = pd.read_csv("thelibraryy.csv")
+            df=pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
             df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
             
-        for label in self.results:
-            self.main_vbox.removeWidget(label)
-            label.deleteLater()
-        self.results.clear()   
+        self.the_input=self.inputbox.text()
+        self.the_one=df[(df["Year"]==self.the_input)]
         
-        theone = df[(df["Title"] == self.thetitle)]
-        self.the_number = theone.shape[0]
-        
-        if theone.empty: 
-            label=QLabel(f"""Title: Not found  
-Author: Not found                  
-Year: Not found                 
-Genre: Not found """,self)
-            self.main_vbox.addWidget(label)
-            label.setAlignment(Qt.AlignCenter)
-            label.setStyleSheet("font-size:30px; ") 
-            self.results.append(label)
-            
-        else:
-            row_layout=QHBoxLayout()
-            for rows_ind,content in theone.iterrows():
+        if self.the_one:
+            for rows_ind,content in self.the_one.iterrows():
                 label=QLabel(self)
                 label.setText(f"""Title       {content["Title"]}
 Author      {content["Author"]}
 Year        {content["Year"]}
 Genre     {content["Genre"]}""")
-                row_layout.addWidget(label)
-                self.main_vbox.addLayout(row_layout)
-                label.setStyleSheet("font-size:30px;")
-                self.results.append(label)
-      
+                
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
     main()
