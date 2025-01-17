@@ -8,13 +8,14 @@ class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,700,700)
+        self.setGeometry(400,400,500,550)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.vbox=QVBoxLayout()
         
         self.book_list = QListWidget()
         self.vbox.addWidget(self.book_list)
+        self.book_list.setStyleSheet("font-size:20px ;")
         
         self.data_info={}
         self.Labels_infos()
@@ -52,7 +53,7 @@ class MainWindow(QWidget):
                     QPushButton {
                         background-color:rgba(255, 255, 255, 0.5);
                         color: black;
-                        font-size: 25px;
+                        font-size: 15px;
                         border: 2px solid #0078D7;
                         border-radius: 20px;
                         padding: 10px;
@@ -92,40 +93,50 @@ class MainWindow(QWidget):
     #         print("book is added to the library")
     def on_click_add(self):
         
-            title=self.data_info['Title'].text()
-            author=self.data_info['Author'].text()
-            year=self.data_info['Year'].text()
-            genre=self.data_info['Genre'].text()
+        title=self.data_info['Title'].text()
+        author=self.data_info['Author'].text()
+        year=self.data_info['Year'].text()
+        genre=self.data_info['Genre'].text()
             
-            try:
-                df = pd.read_csv("thelibraryy.csv")
-            except FileNotFoundError:
-                df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
-            if not year.isdigit():
-                QMessageBox.warning(self,"Input Error",f"Year Must Be A number not {year}")
-                return    
-            if (title and author and year and genre):   
-                if not df[(df["Title"]==title) & (df["Author"]==author)].empty:
-                    QMessageBox.warning(self,"Input Error",f"this book {author} already Exist in the library ")
-                else:
-                    book = books.Books(title=title, author=author, year=year, genre=genre)
-                    frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre}])
-                    
-                    df=pd.concat([df,frame],axis=0,ignore_index=True)
-                    
-                    df.to_csv("thelibraryy.csv", index=False)
-                    self.book_list.addItem(f'the book {{{title}}} by {{{author}}} written in {{{year}}} and its {{{genre}}}')
-                    print("book is added to the library")
+        try:
+             df = pd.read_csv("thelibraryy.csv")
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
+            
+        if not year.isdigit():
+            QMessageBox.warning(self,"Input Error",f"Year Must Be A number not {year}")
+            return 
+           
+        if (title and author and year and genre):   
+            
+            if not df[(df["Title"]==title) & (df["Author"]==author)].empty:
+                QMessageBox.warning(self,"Input Error",f"this book {author} already Exist in the library ")
             else:
-                QMessageBox.warning(self,"Input Error","You Forgot to Fill A Label")            
-                
-                
-                
-            
+                book = books.Books(title=title, author=author, year=year, genre=genre)
+                frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre}])   
+                df=pd.concat([df,frame],axis=0,ignore_index=True)   
+                df.to_csv("thelibraryy.csv", index=False)
+                self.book_list.addItem(f'the book  {{{title}}}  by  {{{author}}}  written in  {{{year}}}  and its  {{{genre}}}')
+                print("book is added to the library")
+        else:
+                QMessageBox.warning(self,"Input Error","You Forgot to Fill a Label") 
+                             
+                             
     def on_click_remove(self):
-            pass
+        
+            selected_item=self.book_list.currentItem()
+            if selected_item:
+                self.book_list.takeItem(self.book_list.row(selected_item))
+            else:
+                QMessageBox.warning(self,"Selection Error","You Didn't Select Any Row")
+                
+                
     def on_click_edit(self):
+        selected_item=self.book_list.currentItem()
+        if selected_item:
             pass
+            
+            
     
 def main():
     app = QApplication(sys.argv)
