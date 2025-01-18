@@ -24,20 +24,16 @@ class MainWindow(QMainWindow):
         label.setStyleSheet("font-weight: bold; color:rgb(29, 25, 25);")
 
         button_labels = [
-            "Adding A Book/s",
+            "Manipulating Data/s",
             "Looking For A Book/s",
-            "Removing a Book/s",
             "Showing The Whole Library",
-            "Changing the Data Of A Book/s",
             "Close The Programme ",
         ]
 
         fonctions = [
-            self.Adding_A_Books,
+            self.Manipulating_Data,
             self.Looking_For_A_Books,
-            self.Removing_a_Books,
             self.Showing_The_WholeLibrary,
-            self.Changing_the_Data_Of_A_Books,
             self.Close_The_Programme,
         ]
 
@@ -77,7 +73,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     
-    def Adding_A_Books(self):
+    def Manipulating_Data(self):
         window = adding_books_class.MainWindow()
         self.child_windows.append(window)  
         window.show()
@@ -86,17 +82,11 @@ class MainWindow(QMainWindow):
     def Looking_For_A_Books(self):
         print("Displaying data...")
 
-    def Removing_a_Books(self):
-        print("Adding student...")
-
     def Showing_The_WholeLibrary(self):
         print("Searching for student...")
 
-    def Changing_the_Data_Of_A_Books(self):
-        print("Calculating general average...")
-
     def Close_The_Programme(self):
-        print("Deleting data...")
+        sys.exit()
 
 
 def main():

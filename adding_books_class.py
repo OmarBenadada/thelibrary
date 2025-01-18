@@ -8,17 +8,36 @@ class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,500,550)
+        self.setGeometry(400,400,600,600)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.vbox=QVBoxLayout()
+
+        try:
+            self.df = pd.read_csv("thelibraryy.csv")
+        except FileNotFoundError:
+            self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
+
+        i=0
+        listo=[]
+        while self.df.shape[0]>i:
+            listo.append(f'the book  {{{self.df["Title"][i]}}}  by  {{{self.df["Author"][i]}}}  written in  {{{self.df["Year"][i]}}}  and its  {{{self.df["Genre"][i]}}}')
+            i+=1    
         
         self.book_list = QListWidget()
         self.vbox.addWidget(self.book_list)
         self.book_list.setStyleSheet("font-size:20px ;")
+        self.book_list.addItems(listo)
         
         self.data_info={}
         self.Labels()
+        
+        self.title=self.data_info['Title'].text()
+        self.author=self.data_info['Author'].text()
+        self.year=self.data_info['Year'].text()
+        self.genre=self.data_info['Genre'].text()
+        
+        
         self.Buttons()
 
     def Labels(self):   
@@ -64,30 +83,24 @@ class MainWindow(QWidget):
                         color: white;}""")
     
     def on_click_add(self):
-        
-        self.title=self.data_info['Title'].text()
-        self.author=self.data_info['Author'].text()
-        self.year=self.data_info['Year'].text()
-        self.genre=self.data_info['Genre'].text()
-            
-        try:
-            df = pd.read_csv("thelibraryy.csv")
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
-            
+        self.title = self.data_info['Title'].text()
+        self.author = self.data_info['Author'].text()
+        self.year = self.data_info['Year'].text()
+        self.genre = self.data_info['Genre'].text()
+
         if not self.year.isdigit():
             QMessageBox.warning(self,"Input Error",f"Year Must Be A number not {self.year}")
             return 
            
         if (self.title and self.author and self.year and self.genre):   
             
-            if not df[(df["Title"]==self.title) & (df["Author"]==self.author)].empty:
+            if not self.df[(self.df["Title"]==self.title) & (self.df["Author"]==self.author)].empty:
                 QMessageBox.warning(self,"Input Error",f"this book {self.author} already Exist in the library ")
             else:
                 book = books.Books(title=self.title, author=self.author, year=self.year, genre=self.genre)
                 frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre}])   
-                df=pd.concat([df,frame],axis=0,ignore_index=True)   
-                df.to_csv("thelibraryy.csv", index=False)
+                self.df=pd.concat([self.df,frame],axis=0,ignore_index=True)   
+                self.df.to_csv("thelibraryy.csv", index=False)
                 self.book_list.addItem(f'the book  {{{self.title}}}  by  {{{self.author}}}  written in  {{{self.year}}}  and its  {{{self.genre}}}')
                 print("book is added to the library")
                 for names,labels in self.data_info.items():
@@ -98,19 +111,14 @@ class MainWindow(QWidget):
                              
     def on_click_remove(self):
         
-        try:
-            df = pd.read_csv("thelibraryy.csv")
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
-        
         selected_item=self.book_list.currentItem()
         if selected_item:
             item_text=selected_item.text()
             start_oftitle=item_text.find("{")+1
             end_oftitle=item_text.find("}")
             result=item_text[start_oftitle:end_oftitle]
-            df=df[~(df['Title']==result)]
-            df.to_csv("thelibraryy.csv", index=False)
+            self.df=self.df[~(self.df['Title']==result)]
+            self.df.to_csv("thelibraryy.csv", index=False)
             self.book_list.takeItem(self.book_list.row(selected_item))
         else:
             QMessageBox.warning(self,"Selection Error","You Didn't Select Any Row")
@@ -120,9 +128,28 @@ class MainWindow(QWidget):
         selected_item=self.book_list.currentItem()
         if selected_item:
             self.book_list.takeItem(self.book_list.row(selected_item))
-            values={'Title':self.title,'Author':self.author,'Year':self.year,'Genre':self.genre}
-            for keys,Label in self.data_info.items():
-                   Label.setText(values[keys])
+            
+        
+            item_text = selected_item.text()
+            
+            # Assuming the text format is like: 'the book {Title} by {Author} written in {Year} and its {Genre}'
+            start_of_title = item_text.find("{") + 1
+            end_of_title = item_text.find("}")
+            title = item_text[start_of_title:end_of_title]
+            
+            start_of_author = item_text.find("by") + 5
+            end_of_author = item_text.find("written")-3
+            author = item_text[start_of_author:end_of_author]
+
+            start_of_year = item_text.find("written in") + 13
+            end_of_year = item_text.find("and its")-3
+            year = item_text[start_of_year:end_of_year]
+
+            start_of_genre = item_text.find("its") + 6
+            genre = item_text[start_of_genre:-1]
+            items={'Title':title,"Author":author,"Year":year,"Genre":genre}
+            for names,labels in self.data_info.items():
+                labels.setText(items[names])
         else: 
             QMessageBox.warning(self,"Selection Error","You Didn't Select Any Row")       
             
