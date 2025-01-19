@@ -25,14 +25,14 @@ class MainWindow(QMainWindow):
 
         button_labels = [
             "Manipulating Data/s",
-            "Looking For A Book/s",
+            "Looking For info of Book/s",
             "Showing The Whole Library",
             "Close The Programme ",
         ]
 
         fonctions = [
             self.Manipulating_Data,
-            self.Looking_For_A_Books,
+            self.Looking_Forinfo_of_Books,
             self.Showing_The_WholeLibrary,
             self.Close_The_Programme,
         ]
@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
         window.show()
         
 
-    def Looking_For_A_Books(self):
+    def Looking_Forinfo_of_Books(self):
         print("Displaying data...")
 
     def Showing_The_WholeLibrary(self):

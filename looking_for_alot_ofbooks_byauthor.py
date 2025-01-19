@@ -1,116 +1,25 @@
-import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QWidget,QPushButton,QHBoxLayout,QLabel,QVBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
-
-import pandas as pd
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 
 class MainWindow(QWidget):
-    
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,600,350)
-        self.setWindowTitle("Virtual Library")
-        self.setWindowIcon(QIcon("bookshelf.png"))
-        self.search=QPushButton("Click Here To Search")
-        self.field=QLineEdit(self)
-        self.field.setPlaceholderText(f"Enter the Author ...")
-        self.theauthor = ""
-        self.the_number=None
-        self.theone=None
-        self.data_info = self.Ui()
+        self.setWindowTitle("QWidget Example")
+        
+        # Create a button
+        self.button = QPushButton("Click Me", self)
+        
+        # Create a layout to arrange the widgets
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.button)
 
-    def Ui(self):
-        
-        self.main_vbox = QVBoxLayout()
-        
-        self.QH=QHBoxLayout()
-        self.QH.setAlignment(Qt.AlignTop)
-        
-        self.search.setStyleSheet("""
-                                    QPushButton {
-                                        background-color:rgba(255, 255, 255, 0.5);
-                                        color: black;
-                                        font-size: 20px;
-                                        border: 2px solid #0078D7;
-                                        border-radius: 20px;
-                                        padding: 10px;
-                                    }
-                                    QPushButton:hover {
-                                        background-color:rgb(147, 210, 255);
-                                        color: white;
-                                    }
-                                """)
-        
-        self.search.clicked.connect(self.on_click) 
-        
-        
-        
-        self.field.setStyleSheet("font-size:30px; ")
-        
-        
-        self.QH.addWidget(self.field)
-        
-            
-        self.QH.addWidget(self.search)    
-        self.main_vbox.addLayout(self.QH)
-        self.setLayout(self.main_vbox)
-        
-    
-    def on_click(self):
-        
-        self.theauthor=self.field.text()
-        
-        try:
-            df = pd.read_csv("thelibraryy.csv")
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
-            
-        self.theone = df[(df["Author"] == self.theauthor)]    
-        self.the_number=self.theone.shape[0]
-        
+        # Set the layout for the QWidget
+        self.setLayout(layout)
 
-        while self.main_vbox.count() > 1:  
-            widget = self.main_vbox.takeAt(1).widget()
-            if widget:
-                widget.deleteLater()
-
-        
-        if self.theone.empty: 
-            label=QLabel(f"""Title: Not found  
-        
-Author: Not found 
-                               
-Year: Not found 
-                              
-Genre: Not found """,self)
-            label.setObjectName('label_nember_zero')
-            self.main_vbox.addWidget(label)
-            label.setAlignment(Qt.AlignCenter)
-            label.setStyleSheet("font-size:30px; ")
-            
-        else:
-            row_layout=QHBoxLayout()
-            for rows_ind,content in self.theone.iterrows():
-                label=QLabel(self)
-                label.setText(f"""Title       {content["Title"]}
-Author      {content["Author"]}
-Year        {content["Year"]}
-Genre       {content["Genre"]}""")
-                label.setObjectName(f"label_number_{rows_ind}")
-                row_layout.addWidget(label)
-                self.main_vbox.addLayout(row_layout)
-                label.setAlignment(Qt.AlignCenter)
-                label.setStyleSheet("font-size:30px;")
-                
-   
-      
 def main():
-    app = QApplication(sys.argv)
+    app = QApplication([])
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
-
+    app.exec_()
 
 if __name__ == "__main__":
     main()
