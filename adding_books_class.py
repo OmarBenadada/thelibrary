@@ -128,11 +128,9 @@ class MainWindow(QWidget):
         selected_item=self.book_list.currentItem()
         if selected_item:
             self.book_list.takeItem(self.book_list.row(selected_item))
-            
-        
+
             item_text = selected_item.text()
             
-            # Assuming the text format is like: 'the book {Title} by {Author} written in {Year} and its {Genre}'
             start_of_title = item_text.find("{") + 1
             end_of_title = item_text.find("}")
             title = item_text[start_of_title:end_of_title]
