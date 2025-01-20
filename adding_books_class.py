@@ -12,7 +12,7 @@ class MainWindow(QWidget):
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.vbox=QVBoxLayout()
-
+        
         try:
             self.df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
@@ -28,6 +28,8 @@ class MainWindow(QWidget):
         self.vbox.addWidget(self.book_list)
         self.book_list.setStyleSheet("font-size:20px ;")
         self.book_list.addItems(listo)
+        
+        self.result=None
         
         self.data_info={}
         self.Labels()
@@ -116,8 +118,8 @@ class MainWindow(QWidget):
             item_text=selected_item.text()
             start_oftitle=item_text.find("{")+1
             end_oftitle=item_text.find("}")
-            result=item_text[start_oftitle:end_oftitle]
-            self.df=self.df[~(self.df['Title']==result)]
+            self.result=item_text[start_oftitle:end_oftitle]
+            self.df=self.df[~(self.df['Title']==self.result)]
             self.df.to_csv("thelibraryy.csv", index=False)
             self.book_list.takeItem(self.book_list.row(selected_item))
         else:
@@ -128,6 +130,7 @@ class MainWindow(QWidget):
         selected_item=self.book_list.currentItem()
         if selected_item:
             self.book_list.takeItem(self.book_list.row(selected_item))
+            self.df=self.df[~(self.df['Title']==self.result)]
 
             item_text = selected_item.text()
             

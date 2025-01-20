@@ -1,7 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QMessageBox,QLabel,QScrollArea,QHBoxLayout,QFrame
+from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QMessageBox,QLabel,QScrollArea,QFrame
 from PyQt5.QtGui import QIcon
-import books
 import pandas as pd
 
 class MainWindow(QWidget):
@@ -64,6 +63,11 @@ class MainWindow(QWidget):
     def search(self):
         title=self.title_label.text()
         theone=self.df[self.df["Title"]==title]
+        
+        while self.QV_result_box.count():
+            item=self.QV_result_box.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
         
         if not title:
             QMessageBox.warning(self,"Input Error",f"You Didnt Enter Anything")
