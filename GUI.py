@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBo
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
 import adding_books_class
+import classe_for_the_looking_button
 
 
 
@@ -27,6 +28,7 @@ class MainWindow(QMainWindow):
             "Manipulating Data/s",
             "Looking For info of Book/s",
             "Showing The Whole Library",
+            "Content",
             "Close The Programme ",
         ]
 
@@ -34,6 +36,7 @@ class MainWindow(QMainWindow):
             self.Manipulating_Data,
             self.Looking_Forinfo_of_Books,
             self.Showing_The_WholeLibrary,
+            self.Content,
             self.Close_The_Programme,
         ]
 
@@ -80,13 +83,18 @@ class MainWindow(QMainWindow):
         
 
     def Looking_Forinfo_of_Books(self):
-        print("Displaying data...")
+        looking_window=classe_for_the_looking_button.MainWindow()
+        self.child_windows.append(looking_window)
+        looking_window.show()
 
     def Showing_The_WholeLibrary(self):
         print("Searching for student...")
 
     def Close_The_Programme(self):
         sys.exit()
+        
+    def Content(self):
+        pass
 
 
 def main():

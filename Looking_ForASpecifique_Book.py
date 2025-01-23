@@ -8,7 +8,7 @@ class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,600,300)
+        self.setGeometry(400,400,600,310)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.data_info = self.Ui()
@@ -19,12 +19,7 @@ class MainWindow(QWidget):
         except FileNotFoundError:
             self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
 
-        
         self.main_vbox = QVBoxLayout()
-
-        # Adjust margins and spacing
-        self.main_vbox.setContentsMargins(10, 10, 10, 10)  # Left, Top, Right, Bottom
-        self.main_vbox.setSpacing(5)  # Space between widgets
 
         QH = QHBoxLayout()
         QH.setAlignment(Qt.AlignTop)
@@ -73,6 +68,7 @@ class MainWindow(QWidget):
         else:
             for index, info in theone.iterrows():
                 frame_book = QFrame()
+                
                 frame_book.setStyleSheet("""
                     QFrame {
                         background: white;
