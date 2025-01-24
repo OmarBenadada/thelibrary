@@ -1,4 +1,23 @@
-Title,Author,Year,Genre
-jung kook,aicha,0,twerk
-jung kook,omar,2004,sad
-lavie,omar,2025,comedy
+Title,Author,Year,Genre,Content
+jung kook,aicha,2504,twerk,jung_kook.txt
+jung kook,omar,2145,history,jung_kook.txt
+jung kook,aicha,3000,romance,jung_kook.txt
+jung kook,omar,2200,thriller,jung_kook.txt
+the great escape,john,1999,action,the_great_escape.txt
+the great escape,john,2025,thriller,the_great_escape_2.txt
+midnight dreams,sara,2020,romance,midnight_dreams.txt
+midnight dreams,sara,2021,drama,midnight_dreams_2.txt
+wings of fire,him,2015,adventure,wings_of_fire.txt
+wings of fire,omar,2000,fantasy,wings_of_fire.txt
+wings of fire,him,2020,adventure,wings_of_fire_2.txt
+chasing stars,elena,2022,drama,chasing_stars.txt
+chasing stars,elena,2023,romance,chasing_stars_2.txt
+silent whispers,alex,2018,horror,silent_whispers.txt
+silent whispers,alex,2021,thriller,silent_whispers_2.txt
+deep ocean,kelly,2010,adventure,deep_ocean.txt
+lost horizons,james,2023,thriller,lost_horizons.txt
+desert winds,lily,1995,action,desert_winds.txt
+moonlight serenade,harry,2005,romance,moonlight_serenade.txt
+echoes of time,sophia,2010,history,echoes_of_time.txt
+the forgotten city,olivia,2012,fantasy,the_forgotten_city.txt
+someting,me,2025,nothing,someting.txt

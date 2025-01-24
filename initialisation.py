@@ -30,3 +30,11 @@ def book_genre():
     return is_right(f"Please Enter The Genre  : ",
              lambda x: re.sub(r'\s+','',x).isalpha(),
              "Wrong Input Please Try Again")
+
+def book_content():
+    
+    return is_right(f"Please Enter The content  : ",
+             lambda x: re.sub(r'\s+','',x).isalpha(),
+             "Wrong Input Please Try Again")
+
+

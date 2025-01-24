@@ -75,7 +75,7 @@ class MainWindow(QWidget):
                         border: 1px solid #ddd;
                         border-radius: 10px;
                         padding: 10px;
-                        margin-bottom: 5px; /* Small bottom margin for each frame */
+                        margin-bottom: 5px; 
                     }
                 """)
 

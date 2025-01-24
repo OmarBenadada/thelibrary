@@ -50,19 +50,17 @@ class MainWindow(QMainWindow):
             button.setFont(QFont("Arial", 10))  
             
             button.setStyleSheet("""
-                QPushButton {
-                    background-color:rgba(255, 255, 255, 0.5);
-                    color: black;
-                    font-size: 25px;
-                    border: 2px solid #0078D7;
-                    border-radius: 20px;
-                    padding: 10px;
-                }
-                QPushButton:hover {
-                    background-color:rgb(147, 210, 255);
-                    color: white;
-                }
-            """)
+                    QPushButton {
+                        background-color:rgba(255, 255, 255, 0.5);
+                        color: black;
+                        font-size: 25px;
+
+                        border-radius: 20px;
+                        padding: 10px;
+                    }
+                    QPushButton:hover {
+                        background-color:rgb(21, 0, 255);
+                        color: white;}""")
             
             button.clicked.connect(fonction)
             

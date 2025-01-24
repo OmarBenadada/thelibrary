@@ -17,7 +17,7 @@ class MainWindow(QWidget):
         try:
             self.df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
-            self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre"])
+            self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre","Content"])
 
         
     def Ui(self):
