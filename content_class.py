@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QLineEdit,QTextEdit
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
+import pandas as pd
 
 class MainWindow(QWidget):
     
@@ -12,6 +13,10 @@ class MainWindow(QWidget):
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.space_for_text = QTextEdit(self)
         self.SaveButton=QPushButton("Click Here To Save")
+        try:
+            self.df = pd.read_csv("thelibraryy.csv")
+        except FileNotFoundError:
+            self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre","Content"])
         self.Ui()
         
     def Ui(self):
@@ -41,7 +46,7 @@ class MainWindow(QWidget):
         self.setLayout(Qv)
         
     def saving(self):
-        pass    
+        the_text=self.space_for_text.toPlainText()   
 
 
 def main():

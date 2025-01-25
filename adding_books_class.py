@@ -8,7 +8,7 @@ class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(400,400,800,800)
+        self.setGeometry(100,100,800,800)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.vbox=QVBoxLayout()
@@ -16,30 +16,21 @@ class MainWindow(QWidget):
         try:
             self.df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
-            self.df = pd.DataFrame(columns=["Title", "Author", "Year", "Genre","Content"])
+            self.df = pd.DataFrame(columns=["ID", "Title", "Author", "Year", "Genre", "Content"])
 
-        i=0
-        listo=[]
-        while self.df.shape[0]>i:
-            listo.append(f'the book  {{{self.df["Title"][i]}}}  by  {{{self.df["Author"][i]}}}  written in  {{{self.df["Year"][i]}}}  and its  {{{self.df["Genre"][i]}}}')
-            i+=1    
+        i = 0
+        listo = []
+        while self.df.shape[0] > i:
+            listo.append(f'ID: {self.df["ID"][i]} - the book  {{{self.df["Title"][i]}}}  by  {{{self.df["Author"][i]}}}  written in  {{{self.df["Year"][i]}}}  and its  {{{self.df["Genre"][i]}}}')
+            i += 1
         
         self.book_list = QListWidget()
         self.vbox.addWidget(self.book_list)
         self.book_list.setStyleSheet("font-size:20px ;")
         self.book_list.addItems(listo)
         
-        self.result=None
-        
         self.data_info={}
         self.Labels()
-        
-        self.title=self.data_info['Title'].text()
-        self.author=self.data_info['Author'].text()
-        self.year=self.data_info['Year'].text()
-        self.genre=self.data_info['Genre'].text()
-        
-        
         self.Buttons()
 
     def Labels(self):   
@@ -52,7 +43,6 @@ class MainWindow(QWidget):
             self.vbox.addWidget(self.field)
             self.data_info[name]=self.field
         self.setLayout(self.vbox)  
-        
         return self.data_info 
         
     def Buttons(self):
@@ -83,78 +73,106 @@ class MainWindow(QWidget):
                     QPushButton:hover {
                         background-color:rgb(0, 170, 255);
                         color: white;}""")
+        
     
     def on_click_add(self):
-        self.title = self.data_info['Title'].text()
-        self.author = self.data_info['Author'].text()
-        self.year = self.data_info['Year'].text()
-        self.genre = self.data_info['Genre'].text()
+        title = self.data_info['Title'].text()
+        author = self.data_info['Author'].text()
+        year = self.data_info['Year'].text()
+        genre = self.data_info['Genre'].text()
 
-        if not self.year.isdigit():
-            QMessageBox.warning(self,"Input Error",f"Year Must Be A number not {self.year}")
-            return 
-           
-        if (self.title and self.author and self.year and self.genre):   
-            
-            if not self.df[(self.df["Title"]==self.title) & (self.df["Author"]==self.author) &(self.df["Year"]==self.year) &(self.df["Genre"]==self.genre)].empty:
-                QMessageBox.warning(self,"Input Error",f"this book {self.author} already Exist in the library ")
+        if not year.isdigit():
+            QMessageBox.warning(self, "Input Error", f"Year Must Be A number not {year}")
+            return
+
+        if title and author and year and genre:
+            if not self.df[(self.df["Title"] == title) & (self.df["Author"] == author) & (self.df["Year"] == year) & (self.df["Genre"] == genre)].empty:
+                QMessageBox.warning(self, "Input Error", f"this book {author} already Exist in the library")
             else:
-                book = books.Books(title=self.title, author=self.author, year=self.year, genre=self.genre,content=self.title.replace(" ","_")+".txt")
-                frame = pd.DataFrame([{"Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre,"Content":book.content}])   
-                self.df=pd.concat([self.df,frame],axis=0,ignore_index=True)   
+                new_id = self.df['ID'].max() + 1 if not self.df.empty else 1
+
+                book = books.Books(title=title, author=author, year=year, genre=genre, content=title.replace(" ", "_") + ".txt")
+
+                frame = pd.DataFrame([{"ID": new_id, "Title": book.title, "Author": book.author, "Year": book.year, "Genre": book.genre, "Content": book.content}])
+
+                self.df = pd.concat([self.df, frame], axis=0, ignore_index=True)
                 self.df.to_csv("thelibraryy.csv", index=False)
-                self.book_list.addItem(f'the book  {{{self.title}}}  by  {{{self.author}}}  written in  {{{self.year}}}  and its  {{{self.genre}}}')
+
+                self.book_list.addItem(f'ID: {new_id} - the book  {{{title}}}  by  {{{author}}}  written in  {{{year}}}  and its  {{{genre}}}.')
+
                 print("book is added to the library")
-                for names,labels in self.data_info.items():
+
+                for names, labels in self.data_info.items():
                     labels.setText("")
         else:
-                QMessageBox.warning(self,"Input Error","You Forgot to Fill a Label") 
+            QMessageBox.warning(self, "Input Error", "You Forgot to Fill a Label")
                              
                              
     def on_click_remove(self):
+        selected_item = self.book_list.currentItem()
+        if selected_item:
+            item_text = selected_item.text()
+
+            # Extract the ID from the selected item
+            start_of_id = item_text.find("ID:") + 4
+            end_of_id = item_text.find("-")-1
+            text_id = int(item_text[start_of_id:end_of_id])
+
+            # Find the index of the row to remove using the ID
+            row_to_drop = self.df[self.df['ID'] == text_id].index
+
+            # Drop the row by index
+            self.df = self.df.drop(row_to_drop, axis=0)
+
+            # Save the updated DataFrame
+            self.df.to_csv("thelibraryy.csv", index=False)
+
+            # Remove the item from the QListWidget
+            self.book_list.takeItem(self.book_list.row(selected_item))
+            for number in self.df["ID"]:
+                if number>text_id:
+                    self.df.loc[self.df["ID"]>text_id,"ID"]-=1
+                    self.df.to_csv("thelibraryy.csv",index=False)
+                    break
+        else:
+            QMessageBox.warning(self, "Selection Error", "You Didn't Select Any Row")
+                        
+                    
+    def on_click_edit(self):
         
         selected_item=self.book_list.currentItem()
-        if selected_item:
-            item_text=selected_item.text()
-            start_oftitle=item_text.find("{")+1
-            end_oftitle=item_text.find("}")
-            self.result=item_text[start_oftitle:end_oftitle]
-            self.df=self.df[~(self.df['Title']==self.result)]
-            self.df.to_csv("thelibraryy.csv", index=False)
-            self.book_list.takeItem(self.book_list.row(selected_item))
-        else:
-            QMessageBox.warning(self,"Selection Error","You Didn't Select Any Row")
+        
+        if not selected_item:
+            QMessageBox.warning(self, "Selection Error", "You Didn't Select Any Row")
+            return
+        
+        self.book_list.takeItem(self.book_list.row(selected_item))
+        item_text = selected_item.text()
+        
+        def exctractor(text,starting_point,end_point,forward=0,backward=0):
+            thestrat=text.find(starting_point)+forward
+            theend=text.find(end_point)-backward
+            return text[thestrat:theend]
+            
+        text_title=exctractor(item_text,"{","}",1)
+        text_author=exctractor(item_text,"by","written",5,3) 
+        text_year=exctractor(item_text,"written in","and its",13,3)     
+        text_genre=exctractor(item_text,"its",".",6)
+        text_ID=int(exctractor(item_text,"ID:","-",4,1)) 
+        
+        row_to_remove=self.df[self.df["ID"]==text_ID].index
+        self.df=self.df.drop(row_to_remove,axis=0)
+        
+        self.df.to_csv("thelibraryy.csv", index=False)
                 
-                
-    def on_click_edit(self):
-        selected_item=self.book_list.currentItem()
-        if selected_item:
-            self.book_list.takeItem(self.book_list.row(selected_item))
-            item_text = selected_item.text()
-            
-            start_of_title = item_text.find("{") + 1
-            end_of_title = item_text.find("}")
-            title = item_text[start_of_title:end_of_title]
-            
-            start_of_author = item_text.find("by") + 5
-            end_of_author = item_text.find("written")-3
-            author = item_text[start_of_author:end_of_author]
-
-            start_of_year = item_text.find("written in") + 13
-            end_of_year = item_text.find("and its")-3
-            year = item_text[start_of_year:end_of_year]
-
-            start_of_genre = item_text.find("its") + 6
-            genre = item_text[start_of_genre:-1]
-            
-            self.df=self.df[~(self.df['Title']==title)]
-            self.df.to_csv("thelibraryy.csv", index=False)
-            
-            items={'Title':title,"Author":author,"Year":year,"Genre":genre}
-            for names,labels in self.data_info.items():
-                labels.setText(items[names])
-        else: 
-            QMessageBox.warning(self,"Selection Error","You Didn't Select Any Row")       
+        items={'Title':text_title,"Author":text_author,"Year":text_year,"Genre":text_genre}
+        for names,labels in self.data_info.items():
+            labels.setText(items[names])
+        for number in self.df["ID"]:
+                if number>text_ID:
+                    self.df.loc[self.df["ID"]>text_ID,"ID"]-=1
+                    self.df.to_csv("thelibraryy.csv",index=False)
+                    break
    
 def main():
     app = QApplication(sys.argv)
