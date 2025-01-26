@@ -9,7 +9,7 @@ class MainWindow(QWidget):
     
     def __init__(self,thecontent=None):
         super().__init__()
-        self.setGeometry(400, 400, 500, 600)
+        self.setGeometry(400, 400, 700, 700)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.space_for_text = QTextEdit(self)
@@ -25,24 +25,56 @@ class MainWindow(QWidget):
         
         self.QV=QVBoxLayout()
         
+        self.space_for_text.setStyleSheet("""
+            QTextEdit {
+                font-size: 18px;
+                color: #2c3e50;
+                background-color: #ecf0f1;
+                border: 2px solid #bdc3c7;
+                border-radius: 10px;
+                padding: 15px;
+                line-height: 1.6;
+                font-family: 'Segoe UI', sans-serif;
+            }
+        """)
+        
         self.QV.addWidget(self.space_for_text)
         self.space_for_text.setStyleSheet("font-size: 20px ;")
         
         self.SaveButton.setStyleSheet("""
             QPushButton {
-                background-color:rgba(255, 255, 255, 0.5);
-                color: black;
-                font-size: 25px;
-                border: 2px solid #0078D7;
-                border-radius: 20px;
-                padding: 10px;
+                background-color: #3498db;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+                border-radius: 15px;
+                padding: 15px 30px;
+                border: 2px solid #2980b9;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             }
             QPushButton:hover {
-                background-color:rgb(147, 210, 255);
-                color: white;
+                background-color: #2980b9;
+                border-color: #1c598a;
+            }
+            QPushButton:pressed {
+                background-color: #1c598a;
+                border-color: #145374;
             }
         """)
         self.QV.addWidget(self.SaveButton)
+        
+        self.space_for_text.setStyleSheet("""
+            QTextEdit {
+                font-size: 18px;
+                color: #2c3e50;
+                background-color: #ecf0f1;
+                border: 2px solid #bdc3c7;
+                border-radius: 10px;
+                padding: 15px;
+                line-height: 1.6;
+                font-family: 'Segoe UI', sans-serif;
+            }
+        """)
         self.SaveButton.clicked.connect(self.saving)
         self.setLayout(self.QV)
         
