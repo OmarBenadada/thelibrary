@@ -1,28 +1,22 @@
 Title,Author,Year,Genre,Content,ID
-silent whispers,alex,2021,thriller,silent_whispersalexthriller.txt,1
-lost horizons,james,2027,mystery,lost_horizonsjamesmystery.txt,2
-lost horizons,james,2023,thriller,lost_horizonsjamesthriller.txt,3
-moonlight serenade,harry,2010,romance,moonlight_serenadeharryromance.txt,4
-moonlight serenade,harry,2015,romance,moonlight_serenadeharryromance2.txt,5
-echoes of time,sophia,2018,fantasy,echoes_of_timesophiafantasy.txt,6
-the forgotten city,olivia,2020,mystery,the_forgotten_cityoliviamystery.txt,7
-the forgotten city,olivia,2023,thriller,the_forgotten_cityoliviathriller.txt,8
-whispers of the forest,noah,2016,fantasy,whispers_of_the_forestnoahfantasy.txt,9
-shadows of the night,lily,2012,horror,shadows_of_the_nightlilyhorror.txt,10
-shadows of the night,lily,2015,mystery,shadows_of_the_nightlilymystery.txt,11
-echoes in the dark,sophia,2012,horror,echoes_in_the_darksophiahorror.txt,12
-echoes in the dark,sophia,2018,fantasy,echoes_in_the_darksophiafantasy.txt,13
-fire and ice,john,2011,romance,fire_and_icejohnromance.txt,14
-fire and ice,john,2016,fantasy,fire_and_icejohnfantasy.txt,15
-hidden truths,emily,2019,thriller,hidden_truthsemilythriller.txt,16
-hidden truths,emily,2021,mystery,hidden_truthsemilymystery.txt,17
-beneath the waves,jack,2014,romance,beneath_the_wavesjackromance.txt,18
-beneath the waves,jack,2020,adventure,beneath_the_wavesjackadventure.txt,19
-a tale of two cities,charles,1859,history,a_tale_of_two_citiescharleshistory.txt,20
-a tale of two cities,charles,1860,fiction,a_tale_of_two_citiescharlesfiction.txt,21
-frozen dreams,lucas,2013,drama,frozen_dreamslucasdrama.txt,22
-frozen dreams,lucas,2018,thriller,frozen_dreamslucasdrama.txt,23
-secrets of the forest,noah,2022,fantasy,secrets_of_the_forestnoahfantasy.txt,24
-secrets of the forest,noah,2023,adventure,secrets_of_the_forestnoahadventure.txt,25
-silent whispers,alex,2018,horror,silent_whispers.txt,26
-echoes of time,sophia,2010,history,echoes_of_time.txt,27
+moonlight serenade,harry,2010,romance,moonlight_serenadeharryromance.txt,1
+echoes of time,sophia,2018,fantasy,echoes_of_timesophiafantasy.txt,2
+the forgotten city,olivia,2020,mystery,the_forgotten_cityoliviamystery.txt,3
+the forgotten city,olivia,2023,thriller,the_forgotten_cityoliviathriller.txt,4
+whispers of the forest,noah,2016,fantasy,whispers_of_the_forestnoahfantasy.txt,5
+shadows of the night,lily,2012,horror,shadows_of_the_nightlilyhorror.txt,6
+echoes in the dark,sophia,2012,horror,echoes_in_the_darksophiahorror.txt,7
+fire and ice,john,2016,fantasy,fire_and_icejohnfantasy.txt,8
+hidden truths,emily,2019,thriller,hidden_truthsemilythriller.txt,9
+hidden truths,emily,2021,mystery,hidden_truthsemilymystery.txt,10
+beneath the waves,jack,2014,romance,beneath_the_wavesjackromance.txt,11
+beneath the waves,jack,2020,adventure,beneath_the_wavesjackadventure.txt,12
+a tale of two cities,charles,1859,history,a_tale_of_two_citiescharleshistory.txt,13
+a tale of two cities,charles,1860,fiction,a_tale_of_two_citiescharlesfiction.txt,14
+frozen dreams,lucas,2013,drama,frozen_dreamslucasdrama.txt,15
+frozen dreams,lucas,2018,thriller,frozen_dreamslucasdrama.txt,16
+secrets of the forest,noah,2022,fantasy,secrets_of_the_forestnoahfantasy.txt,17
+secrets of the forest,noah,2023,adventure,secrets_of_the_forest.txt,18
+echoes in the dark,sophia,2012,horror,echoes_in_the_dark.txt,19
+lost horizons,james,2023,thriller,lost_horizons.txt,20
+fire and ice,john,2011,romance,fire_and_ice.txt,21

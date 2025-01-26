@@ -1,18 +1,20 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QLineEdit,QTextEdit
-from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget,QTextEdit,QMessageBox
+from PyQt5.QtGui import QIcon
 import pandas as pd
+
+
 
 class MainWindow(QWidget):
     
-    def __init__(self):
+    def __init__(self,thecontent=None):
         super().__init__()
         self.setGeometry(400, 400, 500, 600)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.space_for_text = QTextEdit(self)
         self.SaveButton=QPushButton("Click Here To Save")
+        self.thecontent = thecontent
         try:
             self.df = pd.read_csv("thelibraryy.csv")
         except FileNotFoundError:
@@ -24,7 +26,6 @@ class MainWindow(QWidget):
         Qv=QVBoxLayout()
         
         Qv.addWidget(self.space_for_text)
-        self.space_for_text.setFixedSize(600, 600)
         self.space_for_text.setStyleSheet("font-size: 20px ;")
         
         self.SaveButton.setStyleSheet("""
@@ -46,7 +47,15 @@ class MainWindow(QWidget):
         self.setLayout(Qv)
         
     def saving(self):
-        the_text=self.space_for_text.toPlainText()   
+        
+        the_text=self.space_for_text.toPlainText()
+        if self.thecontent:
+            with open(self.thecontent,"w") as file:
+                file.write(the_text)
+        else:
+            QMessageBox.warning(self,"File Error","The .txt file Was not found")
+            
+            
 
 
 def main():

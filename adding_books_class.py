@@ -73,7 +73,7 @@ class MainWindow(QWidget):
                     QPushButton:hover {
                         background-color:rgb(0, 170, 255);
                         color: white;}""")
-        
+         
     
     def on_click_add(self):
         title = self.data_info['Title'].text()
@@ -113,21 +113,16 @@ class MainWindow(QWidget):
         if selected_item:
             item_text = selected_item.text()
 
-            # Extract the ID from the selected item
             start_of_id = item_text.find("ID:") + 4
             end_of_id = item_text.find("-")-1
             text_id = int(item_text[start_of_id:end_of_id])
 
-            # Find the index of the row to remove using the ID
             row_to_drop = self.df[self.df['ID'] == text_id].index
 
-            # Drop the row by index
             self.df = self.df.drop(row_to_drop, axis=0)
 
-            # Save the updated DataFrame
             self.df.to_csv("thelibraryy.csv", index=False)
 
-            # Remove the item from the QListWidget
             self.book_list.takeItem(self.book_list.row(selected_item))
             for number in self.df["ID"]:
                 if number>text_id:
@@ -154,7 +149,7 @@ class MainWindow(QWidget):
             theend=text.find(end_point)-backward
             return text[thestrat:theend]
             
-        text_title=exctractor(item_text,"{","}",1)
+        self.text_title=exctractor(item_text,"{","}",1)
         text_author=exctractor(item_text,"by","written",5,3) 
         text_year=exctractor(item_text,"written in","and its",13,3)     
         text_genre=exctractor(item_text,"its",".",6)
@@ -165,7 +160,7 @@ class MainWindow(QWidget):
         
         self.df.to_csv("thelibraryy.csv", index=False)
                 
-        items={'Title':text_title,"Author":text_author,"Year":text_year,"Genre":text_genre}
+        items={'Title':self.text_title,"Author":text_author,"Year":text_year,"Genre":text_genre}
         for names,labels in self.data_info.items():
             labels.setText(items[names])
         for number in self.df["ID"]:
@@ -173,6 +168,9 @@ class MainWindow(QWidget):
                     self.df.loc[self.df["ID"]>text_ID,"ID"]-=1
                     self.df.to_csv("thelibraryy.csv",index=False)
                     break
+        return self.text_title
+
+   
    
 def main():
     app = QApplication(sys.argv)
