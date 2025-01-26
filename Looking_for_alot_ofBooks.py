@@ -1,7 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QMessageBox,QLabel,QScrollArea,QFrame
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QMessageBox,QLabel,QScrollArea,QFrame,QHBoxLayout
+from PyQt5.QtGui import QIcon,QFont
 import pandas as pd
+from PyQt5.QtCore import Qt
+
 
 class MainWindow(QWidget):
     
@@ -23,32 +25,50 @@ class MainWindow(QWidget):
     def Ui(self):
         
         self.QV=QVBoxLayout()
+        self.QH=QHBoxLayout()
+        
+        virtual_libarary = QLabel("Virtual Library")
+        virtual_libarary.setFont(QFont("Arial", 24, QFont.Bold))
+        virtual_libarary.setAlignment(Qt.AlignCenter)
+        virtual_libarary.setStyleSheet("color: #2E86C1; margin-bottom: 20px;")
+        self.QV.addWidget(virtual_libarary)
     
+        virtual_libarary.setStyleSheet("""
+            font-size: 36px;
+            font-weight: bold;
+            color:rgb(8, 0, 255);
+            padding: 10px;
+            
+        """)
         self.title_label.setStyleSheet("""
             QLineEdit {
                 font-size: 18px;
-                padding: 10px;
-                border: 2px solid #0078D7;
+                padding: 8px;
+                border: 2px solid #ccc;
                 border-radius: 10px;
             }
-        """)
-        self.QV.addWidget(self.title_label)
+            QLineEdit:focus {
+                border-color: #0078D7;
+            }""")
+        
+        self.QH.addWidget(self.title_label)
         
         self.search_button.setStyleSheet("""
-                    QPushButton {
-                        background-color: #0078D7;
-                        color: White;
-                        font-size: 15px;
-                        border-radius: 20px;
-                        font-weight: bold;
-                        padding: 10px;
-                    }
-                    QPushButton:hover {
-                        background-color:rgb(147, 210, 255);
-                        color: white;}""")
-        self.QV.addWidget(self.search_button)
+            QPushButton {
+                font-size: 16px;
+                background-color: #0078D7;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 20px;
+            }
+            QPushButton:hover {
+                background-color: #005BB5;
+            }
+        """)
+        self.QH.addWidget(self.search_button)
         self.search_button.clicked.connect(self.search)
-        
+        self.QV.addLayout(self.QH)
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("background: #f7f7f7; border: none;")
@@ -61,7 +81,7 @@ class MainWindow(QWidget):
         self.setLayout(self.QV)
         
     def search(self):
-        title=self.title_label.text()
+        title=self.title_label.text().strip().lower()
         theone=self.df[self.df["Title"]==title]
         
         while self.QV_result_box.count():

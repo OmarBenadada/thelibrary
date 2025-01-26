@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QListWidget,QMessageBox
+from PyQt5.QtWidgets import QApplication,QTextEdit,QVBoxLayout,QWidget,QPushButton,QListWidget,QMessageBox
 from PyQt5.QtGui import QIcon
-import books
+import bird
 import pandas as pd
 import content_class
 
@@ -13,6 +13,9 @@ class MainWindow(QWidget):
         self.setGeometry(200, 200, 800, 800)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
+        
+        self.selected_text=None
+        self.thetitle=None
         self.vbox=QVBoxLayout()
         self.child_classes=[]
         self.thecontent=None
@@ -33,6 +36,7 @@ class MainWindow(QWidget):
         
         self.read=QPushButton("Read Content")
         self.vbox.addWidget(self.read)
+        self.read.clicked.connect(self.reading)
         
         buttons=[self.insert,self.read]
         for i in buttons:
@@ -68,9 +72,9 @@ class MainWindow(QWidget):
         self.selected_text = item_text.text()
         start = self.selected_text .find("{") + 1
         end = self.selected_text .find("}")
-        thetitle=self.selected_text [start:end]
+        self.thetitle=self.selected_text [start:end]
         
-        theone=self.df[self.df["Title"]==thetitle].iloc[0]
+        theone=self.df[self.df["Title"]==self.thetitle].iloc[0]
         self.thecontent=theone["Content"]
 
     def inserte(self):
@@ -79,6 +83,18 @@ class MainWindow(QWidget):
             insertion = content_class.MainWindow(thecontent=self.thecontent)
             self.child_classes.append(insertion)
             insertion.show()
+        else:
+            QMessageBox.warning(self, "Selection Error", "No item selected!")
+            
+    def reading(self):
+        
+        if self.selected_text:
+            if self.thecontent:
+                readingspace=bird.MainWindow(thecontent=self.thecontent,thetitle=self.thetitle)
+                self.child_classes.append(readingspace)
+                readingspace.show()
+            else:
+                QMessageBox.warning(self, "Error", "No .txt file was found for this book")
         else:
             QMessageBox.warning(self, "Selection Error", "No item selected!")
                 

@@ -1,14 +1,15 @@
 import sys
-from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QListWidget,QMessageBox
+from PyQt5.QtWidgets import QApplication,QLineEdit,QVBoxLayout,QWidget,QPushButton,QListWidget,QMessageBox,QLabel,QHBoxLayout
 from PyQt5.QtGui import QIcon
 import books
 import pandas as pd
+from PyQt5.QtCore import Qt
 
 class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setGeometry(100,100,800,800)
+        self.setGeometry(100, 100, 1000, 800)
         self.setWindowTitle("Virtual Library")
         self.setWindowIcon(QIcon("bookshelf.png"))
         self.vbox=QVBoxLayout()
@@ -18,28 +19,57 @@ class MainWindow(QWidget):
         except FileNotFoundError:
             self.df = pd.DataFrame(columns=["ID", "Title", "Author", "Year", "Genre", "Content"])
 
-        i = 0
-        listo = []
-        while self.df.shape[0] > i:
-            listo.append(f'ID: {self.df["ID"][i]} - the book  {{{self.df["Title"][i]}}}  by  {{{self.df["Author"][i]}}}  written in  {{{self.df["Year"][i]}}}  and its  {{{self.df["Genre"][i]}}}')
-            i += 1
+        
+        
+        virtual_libarary=QLabel("Virtual Library",self)
+        virtual_libarary.setAlignment(Qt.AlignHCenter )
+        virtual_libarary.setStyleSheet("""
+            font-size: 36px;
+            font-weight: bold;
+            color:rgb(8, 0, 255);
+            background-color:rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgb(255, 255, 255);
+            
+        """)
+        self.vbox.addWidget(virtual_libarary)
         
         self.book_list = QListWidget()
         self.vbox.addWidget(self.book_list)
-        self.book_list.setStyleSheet("font-size:20px ;")
-        self.book_list.addItems(listo)
+        self.book_list.setStyleSheet("""
+            font-size: 20px;
+            padding: 10px;
+            border: 2px solid #0078D7;
+            border-radius: 10px;
+            background-color:rgb(255, 255, 255);
+        """)
+        self.popularate()
         
         self.data_info={}
         self.Labels()
         self.Buttons()
-
-    def Labels(self):   
         
+    def popularate(self):
+        i = 0
+        listo = []
+        while self.df.shape[0] > i:
+            listo.append(f'ID: {self.df["ID"][i]} - The Book  {{{self.df["Title"][i]}}}  By  {{{self.df["Author"][i]}}}  Written In  {{{self.df["Year"][i]}}}  And I\'ts  {{{self.df["Genre"][i]}}}')
+            i += 1
+        self.book_list.addItems(listo)
+        
+    def Labels(self):
         self.names=['Title','Author','Year','Genre']
         for name in self.names:
             self.field=QLineEdit(self)
             self.field.setPlaceholderText(f"Enter the {name} ...")
-            self.field.setStyleSheet("font-size:20px; ")
+            self.field.setStyleSheet("""
+                font-size: 18px;
+                padding: 10px;
+                border: 2px solid #0078D7;
+                border-radius: 10px;
+                margin-bottom: 10px;
+            """)
             self.vbox.addWidget(self.field)
             self.data_info[name]=self.field
         self.setLayout(self.vbox)  
@@ -47,39 +77,43 @@ class MainWindow(QWidget):
         
     def Buttons(self):
         
+        buttons_layout = QHBoxLayout()
+        
         self.add=QPushButton("Add")
-        self.vbox.addWidget(self.add)
+        buttons_layout.addWidget(self.add)
         self.add.clicked.connect(self.on_click_add)
         
         self.remove=QPushButton("Remove")
-        self.vbox.addWidget(self.remove)
+        buttons_layout.addWidget(self.remove)
         self.remove.clicked.connect(self.on_click_remove)
         
         self.edit=QPushButton("Edit")
-        self.vbox.addWidget(self.edit)
+        buttons_layout.addWidget(self.edit)
         self.edit.clicked.connect(self.on_click_edit)
             
         buttons=[self.add,self.remove,self.edit]
         for i in buttons:
             i.setStyleSheet("""
-                    QPushButton {
-                        background-color:rgba(255, 255, 255, 0.5);
-                        color: black;
-                        font-size: 25px;
-                        border: 2px solid #0078D7;
-                        border-radius: 20px;
-                        padding: 10px;
-                    }
-                    QPushButton:hover {
-                        background-color:rgb(0, 170, 255);
-                        color: white;}""")
-         
+                QPushButton {
+                    background-color:rgb(14, 0, 215);
+                    color: white;
+                    font-size: 18px;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 10px;
+                    margin: 5px;
+                }
+                QPushButton:hover {
+                    background-color: #005BB5;
+                }
+            """)
+        self.vbox.addLayout(buttons_layout) 
     
     def on_click_add(self):
-        title = self.data_info['Title'].text()
-        author = self.data_info['Author'].text()
-        year = self.data_info['Year'].text()
-        genre = self.data_info['Genre'].text()
+        title = self.data_info['Title'].text().strip()
+        author = self.data_info['Author'].text().strip()
+        year = self.data_info['Year'].text().strip()
+        genre = self.data_info['Genre'].text().strip()
 
         if not year.isdigit():
             QMessageBox.warning(self, "Input Error", f"Year Must Be A number not {year}")

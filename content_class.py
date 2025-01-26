@@ -23,9 +23,9 @@ class MainWindow(QWidget):
         
     def Ui(self):
         
-        Qv=QVBoxLayout()
+        self.QV=QVBoxLayout()
         
-        Qv.addWidget(self.space_for_text)
+        self.QV.addWidget(self.space_for_text)
         self.space_for_text.setStyleSheet("font-size: 20px ;")
         
         self.SaveButton.setStyleSheet("""
@@ -42,9 +42,9 @@ class MainWindow(QWidget):
                 color: white;
             }
         """)
-        Qv.addWidget(self.SaveButton)
+        self.QV.addWidget(self.SaveButton)
         self.SaveButton.clicked.connect(self.saving)
-        self.setLayout(Qv)
+        self.setLayout(self.QV)
         
     def saving(self):
         
@@ -52,12 +52,9 @@ class MainWindow(QWidget):
         if self.thecontent:
             with open(self.thecontent,"w") as file:
                 file.write(the_text)
+            QMessageBox.information(self, "Title", "This is an information message.")
         else:
             QMessageBox.warning(self,"File Error","The .txt file Was not found")
-            
-            
-
-
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
